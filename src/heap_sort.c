@@ -65,7 +65,7 @@ void show_root(Process *process_list)
     printf("name = %s\t", process_list[1].name);
     printf("priority = %d\t", process_list[1].priority);
     printf("time = %d\t", process_list[1].time_cpu);
-    printf("sleep = %f\n", (float)process_list[1].time_cpu / 1000);
+    printf("ciclos = %d\n", process_list[1].cicles);
     sleep((float)process_list[1].time_cpu / ONE_SECOND);
 }
 
@@ -79,11 +79,39 @@ void heap_sort(void *atributes)
     for (int i = heap_size - 1; i > 1; i--)
     {
         sem_wait(&mutex);
+        process_list[1].cicles -= 1; // decrementa a quantidade de ciclos restantes
         show_root(process_list);
         swap(&process_list[1], &process_list[i]);
+        // se o processo q acabou de ser executado já terminou seus ciclos, marca como concluido
+        if (process_list[i].cicles <= 0)
+        {
+            printf("Removendo %s\n", process_list[heap_size - 1].name);
+            process_list[heap_size - 1].state = 0;
+            swap(&process_list[heap_size - 1], &process_list[atributes_cp->size_list - 1]);
+            atributes_cp->size_list -= 1;
+        }
         heap_size -= 1;
         heapify(process_list, 1, heap_size);
         sem_post(&mutex);
     }
+    process_list[1].cicles -= 1;
     show_root(process_list);
+    if (process_list[1].cicles <= 0)
+    {
+        printf("Removendo %s\n", process_list[heap_size - 1].name);
+        process_list[heap_size - 1].state = 0;
+        swap(&process_list[heap_size - 1], &process_list[atributes_cp->size_list - 1]);
+        atributes_cp->size_list -= 1;
+    }
+    build_heap(process_list, atributes_cp->size_list); // construir heap
+    // chama recursivo até que a fila de execucao esteja vazia
+    if (atributes_cp->size_list > 0)
+    {
+        printf("\n");
+        heap_sort(atributes_cp);
+    }
+    else
+    {
+        printf("\nFIM da execução da Lista!!!\n");
+    }
 }

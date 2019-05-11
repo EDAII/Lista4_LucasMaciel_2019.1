@@ -8,8 +8,8 @@
 // tempo max e minimo de um processo dos conjutos padrões na cpu em ms
 #define MAX_TIME 2000
 #define MIN_TIME 500
-#define MAX_CICLES 1
-#define MIN_CICLES 15
+#define MAX_CICLES 5
+#define MIN_CICLES 1
 #define MAX_PROCESS 50
 #define MIN_PROCESS 0
 
@@ -18,7 +18,7 @@ struct process
     int id;
     char name[50];
     int priority; // prioridade de execução
-    int state;    // state 0 = em execucao, 1 = na fila de execução, 2 = em espera
+    int state;    // state 0 = terminou , 1 = em execucao
     int time_cpu; // tempo medio de processamento do processo a cada vez que é chamado em ms
     int cicles;   // Ciclos restantes para conclusao do processo
 } typedef Process;

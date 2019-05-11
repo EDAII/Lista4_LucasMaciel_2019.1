@@ -13,11 +13,9 @@
 
 #define MAX_TIME 2000
 #define MIN_TIME 500
-#define MAX_CICLES 1
-#define MIN_CICLES 15
 #define SIZE_MAX 100
 #define SIZE_MIN 10
-#define PRIORITY_MAX 50
+#define PRIORITY_MAX 20
 #define PRIORITY_MIN 1
 #define NUM_THREADS 2
 
@@ -56,7 +54,7 @@ void main_menu()
         // MENU
         printf("\t\t\t*** ESCALONADOR DE PROCESSOS ***\n");
         printf("-------------------------------------------------------------------------\n");
-        printf("\t(1) - Iniciar Processos\n");
+        printf("\t(1) - Criar Lista de Processos\n");
         printf("\t(2) - Mostrar Simulação\n");
         printf("\t(3) - Adicionar Processo\n");
         // printf("\t(4) - Interromper/Remover Processo\n");
