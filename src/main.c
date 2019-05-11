@@ -17,17 +17,19 @@
 #define MIN_CICLES 15
 #define SIZE_MAX 100
 #define SIZE_MIN 10
-#define PRIORITY_MAX 10
+#define PRIORITY_MAX 50
 #define PRIORITY_MIN 1
-#define NUM_THREADS 1
+#define NUM_THREADS 2
 
 void main_menu();
 void simulation();
+void await_simulation();
 Process add_menu(Process *process_list);
 int start_sheduler_menu(Process *process_list, int *begin, int *size_list);
 
 int main()
 {
+    sem_init(&mutex, 0, 1); // inicia semaforo da thread de heap sort
     setlocale(LC_ALL, "Portuguese");
     main_menu();
     return 0;
@@ -57,7 +59,7 @@ void main_menu()
         printf("\t(1) - Iniciar Processos\n");
         printf("\t(2) - Mostrar Simulação\n");
         printf("\t(3) - Adicionar Processo\n");
-        printf("\t(4) - Interromper/Remover Processo\n");
+        // printf("\t(4) - Interromper/Remover Processo\n");
         printf("\t(0) - Sair do Sistema\n");
         printf("-------------------------------------------------------------------------\n");
         printf("Digite uma opção: ");
@@ -72,7 +74,7 @@ void main_menu()
             if (set_group == -1)
                 break;
             process_list = realloc(process_list, size_list * sizeof(Process));
-            start_sheduler(process_list, PRIORITY_MIN, PRIORITY_MAX, set_group, begin, size_list);
+            start_sheduler(process_list, PRIORITY_MIN, PRIORITY_MAX, begin, size_list);
             break;
         case 2:
             simulation(process_list, begin, size_list);
@@ -98,6 +100,7 @@ void simulation(Process *process_list, int begin, int size_list)
         printf("Não há fila de processos!\n");
         printf("\tRetornando ao menu principal...\n");
         getchar();
+        getchar();
         return;
     }
 
@@ -108,19 +111,21 @@ void simulation(Process *process_list, int begin, int size_list)
     atributes = malloc(sizeof(HeapAtributes));
     atributes->process_list = process_list;
     atributes->size_list = size_list;
-    printf("%d\n", atributes->size_list);
-    // heap_sort(process_list, size_list);
-    pthread_create(&threads[0], NULL, (void *)heap_sort, (void *)atributes);
+    // pthread_create(&threads[0], NULL, (void *)await_simulation, NULL);
+    for (int i = 1; i < NUM_THREADS; i++)
+        pthread_create(&threads[i], NULL, (void *)heap_sort, (void *)atributes);
+    getchar();
+    getchar();
+}
 
-    // printf("\nDEPOIS DO SORT\n\n");
-    // for (int i = begin; i < size_list; i++)
-    // {
-    //     printf("name = %s ", process_list[i].name);
-    //     printf("priority = %d ", process_list[i].priority);
-    //     printf("time = %d\n", process_list[i].time_cpu);
-    // }
-    getchar();
-    getchar();
+void await_simulation()
+{
+    // funcao que aguarda um valor no teclado, enquanto simulação esta em andamento
+    while (1)
+    {
+        scanf("%*d");
+        printf("Simulação Pausada\n");
+    }
 }
 
 Process add_menu(Process *process_list)

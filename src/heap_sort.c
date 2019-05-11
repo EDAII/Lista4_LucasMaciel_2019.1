@@ -3,8 +3,11 @@
 #include <string.h>
 #include "sheduler.c"
 #include <unistd.h>
+#include <semaphore.h>
 
 #define ONE_SECOND 1000 // 1000ms
+
+sem_t mutex; // semaforo para pausar a simulacao da heap_sort
 
 struct heap_atributes
 {
@@ -58,9 +61,10 @@ void build_heap(Process *process_list, int heap_size)
 
 void show_root(Process *process_list)
 {
-    printf("name = %s ", process_list[1].name);
-    printf("priority = %d ", process_list[1].priority);
-    printf("time = %d ", process_list[1].time_cpu);
+    printf("id = %d\t", process_list[1].id);
+    printf("name = %s\t", process_list[1].name);
+    printf("priority = %d\t", process_list[1].priority);
+    printf("time = %d\t", process_list[1].time_cpu);
     printf("sleep = %f\n", (float)process_list[1].time_cpu / 1000);
     sleep((float)process_list[1].time_cpu / ONE_SECOND);
 }
@@ -74,10 +78,12 @@ void heap_sort(void *atributes)
     // funcao da heap_sort modificada, para mostrar as iterações
     for (int i = heap_size - 1; i > 1; i--)
     {
+        sem_wait(&mutex);
         show_root(process_list);
         swap(&process_list[1], &process_list[i]);
         heap_size -= 1;
         heapify(process_list, 1, heap_size);
+        sem_post(&mutex);
     }
     show_root(process_list);
 }
