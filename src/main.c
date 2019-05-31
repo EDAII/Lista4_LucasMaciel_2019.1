@@ -27,7 +27,6 @@ int start_sheduler_menu(Process *process_list, int *begin, int *size_list);
 
 int main()
 {
-    sem_init(&mutex, 0, 1); // inicia semaforo da thread de heap sort
     setlocale(LC_ALL, "Portuguese");
     main_menu();
     return 0;
@@ -45,7 +44,7 @@ void main_menu()
 
     process_list = malloc(sizeof(Process));
 
-    // while ou thread
+    // while ou thread? eis a questao
     while (1)
     {
         system("clear");
@@ -109,7 +108,6 @@ void simulation(Process *process_list, int begin, int size_list)
     atributes = malloc(sizeof(HeapAtributes));
     atributes->process_list = process_list;
     atributes->size_list = size_list;
-    // pthread_create(&threads[0], NULL, (void *)await_simulation, NULL);
     for (int i = 1; i < NUM_THREADS; i++)
         pthread_create(&threads[i], NULL, (void *)heap_sort, (void *)atributes);
     getchar();
@@ -162,6 +160,7 @@ int start_sheduler_menu(Process *process_list, int *begin, int *size_list)
     printf("\t(4) - Mega (Conjunto completo com 50 processos)\n");
     printf("Digite com qual conjunto iniciar o Sistema: ");
     scanf("%d", &op);
+    //
     if (op == 0)
         return -1;
     set_group = op - 1;
