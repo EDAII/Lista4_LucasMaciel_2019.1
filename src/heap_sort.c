@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "sheduler.c"
+#include "process_list.c"
 #include <unistd.h>
 
 #define ONE_SECOND 1000 // 1000ms

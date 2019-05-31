@@ -1,5 +1,5 @@
 #include "heap_sort.c"
-#include "sheduler.c"
+#include "process_list.c"
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,7 +56,6 @@ void main_menu()
         printf("\t(1) - Criar Lista de Processos\n");
         printf("\t(2) - Mostrar Simulação\n");
         printf("\t(3) - Adicionar Processo\n");
-        // printf("\t(4) - Interromper/Remover Processo\n");
         printf("\t(0) - Sair do Sistema\n");
         printf("-------------------------------------------------------------------------\n");
         printf("Digite uma opção: ");

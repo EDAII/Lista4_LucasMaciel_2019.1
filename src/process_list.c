@@ -45,7 +45,7 @@ char *list_process[50] = {
     "csd-keyboard",
     "csd-media-keys",
     "csd-mouse",
-    "csd-orientation─",
+    "csd-orientation",
     "csd-power",
     "steam",
     "chrome",
